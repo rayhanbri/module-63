@@ -8,7 +8,7 @@ import randstad from "../../../../assets/brands/start.png";
 
 const BrandMarquee = () => {
     return (
-        <div className="bg-gray-100 py-8">
+        <div className="bg-gray-100 py-8  my-8 rounded-xl">
             <div className="text-center mb-6">
                 <h2 className="text-lg font-semibold text-[#00323D]">
                     We've helped thousands of sales teams
@@ -18,8 +18,8 @@ const BrandMarquee = () => {
             <Marquee
                 pauseOnHover={true}
                 gradient={false}
-                speed={50}
-                direction="right"
+                speed={30}
+                direction="left"
                 className="mb-4"
             >
                 <div className="flex space-x-12 items-center">
