@@ -5,7 +5,7 @@ import ProFastLogo from '../pages/Home/Home/Shared/ProFastLogo/ProFastLogo';
 
 const AuthLayout = () => {
     return (
-        <div className="p-12 bg-base-200 ">
+        <div className="p-12  ">
             <div>
             <ProFastLogo></ProFastLogo>
             </div>
@@ -13,7 +13,7 @@ const AuthLayout = () => {
                 <div className='flex-1'>
                     <img
                     src={image}
-                    className="max-w-sm rounded-lg shadow-2xl"
+                    className="max-w-sm "
                 />
                 </div>
                 <div className='flex-1'>
