@@ -7,6 +7,7 @@ import AuthLayout from "../layout/AuthLayout";
 import { Component } from "react";
 import Login from "../pages/Authentication/Login/Login";
 import Register from "../pages/Authentication/Login/Register";
+import Coverage from "../pages/Coverage/Coverage";
 
 
 export const router = createBrowserRouter([
@@ -17,6 +18,11 @@ export const router = createBrowserRouter([
             {
                 index: true,
                 element: <Home></Home>
+            },
+            {
+                path:'coverage',
+                Component:Coverage,
+                loader : () =>fetch('../../public/warehouses.json')
             }
         ]
     },
