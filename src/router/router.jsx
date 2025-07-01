@@ -8,6 +8,8 @@ import { Component } from "react";
 import Login from "../pages/Authentication/Login/Login";
 import Register from "../pages/Authentication/Login/Register";
 import Coverage from "../pages/Coverage/Coverage";
+import PrivateRoute from "../routes/PrivateRoute";
+import SendParcel from "../pages/SendParcel/SendParcel";
 
 
 export const router = createBrowserRouter([
@@ -20,24 +22,29 @@ export const router = createBrowserRouter([
                 element: <Home></Home>
             },
             {
-                path:'coverage',
-                Component:Coverage,
-                loader : () =>fetch('../../public/warehouses.json')
+                path: 'coverage',
+                Component: Coverage,
+                loader: () => fetch('../../public/warehouses.json')
+            },
+            {
+                path: 'sendParcel',
+                element: <PrivateRoute><SendParcel></SendParcel></PrivateRoute>,
+                loader: () => fetch('../../public/warehouses.json')
             }
         ]
     },
     {
-        path:'/',
-        Component:AuthLayout,
-        children:[
+        path: '/',
+        Component: AuthLayout,
+        children: [
             {
-            path:'/login',
-            Component:Login
-        },
-        {
-            path:'/register',
-            Component:Register
-        }
-    ]
+                path: '/login',
+                Component: Login
+            },
+            {
+                path: '/register',
+                Component: Register
+            }
+        ]
     }
 ]);
