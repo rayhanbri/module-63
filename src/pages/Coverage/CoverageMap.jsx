@@ -25,12 +25,17 @@ const CoverageMap = ({serviceCenters}) => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           {
-            serviceCenters.map((center,index) => <Marker 
+            serviceCenters.map((center,index) => 
+            <Marker 
             key={index}
             position={[center.latitude,center.longitude]} 
             icon={pinIcon}>
-            <Popup>We proudly serve all 64 districts of Bangladesh 🇧🇩</Popup>
-          </Marker>)
+            <Popup>
+              <strong>{center.district}</strong>
+              <p>{center.covered_area.join(',')}</p>
+            </Popup>
+          </Marker>
+          )
           }
 
          
