@@ -2,9 +2,11 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router';
 import SocialLogin from '../SocialLogin/SocialLogin';
+import useAuth from '../../../Hooks/useAuth';
 
 
 const Login = () => {
+    const {signIn} = useAuth();
     const { register, handleSubmit, formState: { errors } } = useForm();
     const location  = useLocation();
     const navigate = useNavigate();
@@ -14,6 +16,15 @@ const Login = () => {
 
     const onSubmit = data => {
         console.log(data)
+        signIn(data.email,data.password)
+        .then(res =>{
+            console.log(res.user);
+            navigate(from)
+        })
+        .catch(error =>{
+            console.log(error)
+        })
+
     }
     return (
         <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
@@ -38,7 +49,7 @@ const Login = () => {
                     </fieldset>
                     <p><small>Already have and account?<Link className='btn btn-link  pl-0' to='/register'>Register</Link></small></p>
                 </form>
-                <SocialLogin></SocialLogin>
+                <SocialLogin from={from}></SocialLogin>
             </div>
         </div>
     );
