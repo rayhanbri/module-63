@@ -10,7 +10,7 @@ const Navbar = () => {
         <li><NavLink to='sendParcel'>Send Parcel</NavLink></li>
         <li><NavLink to='coverage'>Coverage</NavLink></li>
         {
-           user && <li><NavLink to='dashBoard'>DashBoard</NavLink></li>
+           user && <li><NavLink to='/dashBoard'>DashBoard</NavLink></li>
         }
         <li><NavLink>About Us</NavLink></li>
     </>
@@ -42,7 +42,7 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <Link to='/login' className='btn btn-primary text-black p-3'>Login</Link>
+                <Link to='login' className='btn btn-primary text-black p-3'>Login</Link>
             </div>
         </div>
     );

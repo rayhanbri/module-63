@@ -40,11 +40,11 @@ export const router = createBrowserRouter([
         Component: AuthLayout,
         children: [
             {
-                path: '/login',
+                path: 'login',
                 Component: Login
             },
             {
-                path: '/register',
+                path: 'register',
                 Component: Register
             }
         ]
@@ -54,7 +54,7 @@ export const router = createBrowserRouter([
         element:<PrivateRoute><DashBoardLayout></DashBoardLayout></PrivateRoute>,
         children :[
             {
-                path:'myparcels',
+                path:'myParcels',
                 Component: MyParcel
             }
         ]
