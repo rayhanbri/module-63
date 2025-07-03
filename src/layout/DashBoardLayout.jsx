@@ -44,7 +44,7 @@ const DashBoardLayout = () => {
                     <li><NavLink to='/'><FaHome className="inline mr-2" />Home</NavLink></li>
                     <li><NavLink to='myParcels'><FaBoxOpen className="inline mr-2" />My Parcel</NavLink></li>
                     <li><NavLink to='paymentHistory'><FaHistory className="inline mr-2" />Payment History</NavLink></li>
-                    <li><NavLink to='tackParcel'><FaSearchLocation className="inline mr-2" />Track A Parcel</NavLink></li>
+                    <li><NavLink to='trackParcel'><FaSearchLocation className="inline mr-2" />Track A Parcel</NavLink></li>
                     <li><NavLink to='updateProfile'><FaUserEdit className="inline mr-2" />Update Profile</NavLink></li>
                 </ul>
             </div>
