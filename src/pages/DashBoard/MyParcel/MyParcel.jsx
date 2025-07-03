@@ -3,9 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import useAuth from '../../../Hooks/useAuth';
 import useAxiosSecure from '../../../Hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router';
 
 const MyParcel = () => {
     const { user } = useAuth();
+    const  navigate = useNavigate();
     const axiosSecure = useAxiosSecure();
     const { data: parcels = [], refetch } = useQuery({
         queryKey: ['my-parcel', user.email],
@@ -49,13 +51,15 @@ const MyParcel = () => {
             }
         });
     };
-
-
     const getStatusColor = (status) => {
         if (status === 'paid') return 'text-green-600 font-bold';
         if (status === 'unpaid') return 'text-red-600 font-bold';
         return 'text-gray-600';
     };
+
+    const handlePayment = (id) => {
+         navigate(`/dashBoard/payment/${id}`)
+    }
 
     return (
         <div className="overflow-x-auto">
@@ -87,7 +91,7 @@ const MyParcel = () => {
                             <td>
                                 <div className="flex gap-1">
                                     <button className="btn btn-xs btn-info">View</button>
-                                    <button className="btn btn-xs btn-success">Payment</button>
+                                    <button onClick={()=>handlePayment(parcel._id)} className="btn btn-xs btn-success">Payment</button>
                                     <button onClick={() => handleDelete(parcel._id)} className="btn btn-xs btn-error">Delete</button>
                                 </div>
                             </td>
