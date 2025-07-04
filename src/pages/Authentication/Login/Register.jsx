@@ -1,22 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../../Hooks/useAuth';
 import { Link } from 'react-router';
 import SocialLogin from '../SocialLogin/SocialLogin';
+import axios from 'axios';
 
 const Register = () => {
     const { register, handleSubmit, formState: { errors } } = useForm()
-    const { createUser } = useAuth();
+    const { createUser , updateUserProfile} = useAuth();
+    const [profilePic,setProfilePic] = useState('');
 
     const onSubmit = data => {
         console.log(data)
         createUser(data.email, data.password)
             .then(result => {
                 console.log(result.user)
+                // 4. go to auth provder for update profile 
+                //5. here 
+                const profileInfo = {
+                    displayName : data.name,
+                    photoURL : profilePic
+                }
+                updateUserProfile(profileInfo)
+                .then(()=>{
+                    console.log('profile picture update')
+                })
+                .catch(error =>{
+                    console.log(error)
+                })
             })
             .catch(error => {
                 console.log(error)
             })
+    }
+
+    const handleUpload = async (e) => {
+        const image = e.target.files[0];
+        const formData = new FormData();
+        formData.append('image', image);
+        console.log(formData)
+        //1 now go to api key  and put in env file 
+        //2. and also copy link from example call// cut expirtaion to &
+        const res = await axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_img_key}`,formData)
+
+       setProfilePic(res.data.data.url)
+        // 3.decalere a state then update profile in firebase 
     }
 
 
@@ -26,6 +54,14 @@ const Register = () => {
                 <h1 className="text-4xl font-bold">Create Account Now!</h1>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <fieldset className="fieldset">
+                        {/* name  */}
+                        <label className="label">Name</label>
+                        <input type="text" {...register('name', { required: true })} className="input" placeholder="Your Name" />
+                        {/* Profile Photo  */}
+                        <label className="label">Profile  Photo</label>
+                        <input type="file"
+                            onChange={handleUpload}
+                            className="input" placeholder="Upload Your Photo" />
                         {/* email  */}
                         <label className="label">Email</label>
                         <input type="email" {...register('email', { required: true })} className="input" placeholder="Email" />
