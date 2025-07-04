@@ -4,30 +4,41 @@ import useAuth from '../../../Hooks/useAuth';
 import { Link } from 'react-router';
 import SocialLogin from '../SocialLogin/SocialLogin';
 import axios from 'axios';
+import useAxios from '../../../Hooks/useAxios';
 
 const Register = () => {
     const { register, handleSubmit, formState: { errors } } = useForm()
-    const { createUser , updateUserProfile} = useAuth();
-    const [profilePic,setProfilePic] = useState('');
+    const { createUser, updateUserProfile } = useAuth();
+    const [profilePic, setProfilePic] = useState('');
+    const axiosInstance = useAxios();
 
     const onSubmit = data => {
         console.log(data)
         createUser(data.email, data.password)
-            .then(result => {
+            .then(async (result) => {
                 console.log(result.user)
+                // update use info in data base 
+                const userInfo = {
+                    email: data.email,
+                    role: 'user', // default
+                    created_at: new Date().toISOString(),
+                    last_log_in: new Date().toISOString()
+                }
+                const user = await axiosInstance.post('/users', userInfo);
+                console.log(user.data)
                 // 4. go to auth provder for update profile 
                 //5. here 
                 const profileInfo = {
-                    displayName : data.name,
-                    photoURL : profilePic
+                    displayName: data.name,
+                    photoURL: profilePic
                 }
                 updateUserProfile(profileInfo)
-                .then(()=>{
-                    console.log('profile picture update')
-                })
-                .catch(error =>{
-                    console.log(error)
-                })
+                    .then(() => {
+                        console.log('profile picture update')
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
             })
             .catch(error => {
                 console.log(error)
@@ -41,9 +52,9 @@ const Register = () => {
         console.log(formData)
         //1 now go to api key  and put in env file 
         //2. and also copy link from example call// cut expirtaion to &
-        const res = await axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_img_key}`,formData)
+        const res = await axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_img_key}`, formData)
 
-       setProfilePic(res.data.data.url)
+        setProfilePic(res.data.data.url)
         // 3.decalere a state then update profile in firebase 
     }
 
