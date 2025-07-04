@@ -1,21 +1,33 @@
 import React from 'react';
 import useAuth from '../../../Hooks/useAuth';
-import {  useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
+import useAxios from '../../../Hooks/useAxios';
 
-const SocialLogin = ({from}) => {
-    const  {googleLogin} = useAuth();
+const SocialLogin = ({ from }) => {
+    const { googleLogin } = useAuth();
     const navigate = useNavigate();
-    
+    const axiosInstance = useAxios();
 
-    const handleLogin = () =>{
+
+    const handleLogin = () => {
         googleLogin()
-        .then(result =>{
-            console.log(result.user)
-            navigate(from)
-        })
-        .catch(error => {
-            console.log(error)
-        })
+            .then(async (result) => {
+                // console.log(result.user)
+                console.log(result.user.email)
+                // update use info in data base 
+                const userInfo = {
+                    email: result.user.email,
+                    role: 'user', // default
+                    created_at: new Date().toISOString(),
+                    last_log_in: new Date().toISOString()
+                }
+                const user = await axiosInstance.post('/users', userInfo);
+                console.log('update in google',user.data)
+                navigate(from)
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
     return (
         <div className='text-center'>
