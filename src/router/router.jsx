@@ -15,6 +15,8 @@ import MyParcel from "../pages/DashBoard/MyParcel/MyParcel";
 import Payment from "../pages/DashBoard/Payment/Payment";
 import PaymentHistory from "../pages/DashBoard/PaymentHistory/PaymentHistory";
 import TrackParcel from "../pages/DashBoard/TrackParcel/TrackParcel";
+import BeARider from "../pages/BeARider/BeARider";
+import PendingRiders from "../pages/DashBoard/PendingRider/PendingRiders";
 
 
 export const router = createBrowserRouter([
@@ -35,6 +37,11 @@ export const router = createBrowserRouter([
                 path: 'sendParcel',
                 element: <PrivateRoute><SendParcel></SendParcel></PrivateRoute>,
                 loader: () => fetch('../../public/warehouses.json')
+            },
+            {
+                path: 'rider',
+                element: <PrivateRoute><BeARider></BeARider></PrivateRoute>,
+                loader: () => fetch('../../public/warehouses.json')
             }
         ]
     },
@@ -53,24 +60,28 @@ export const router = createBrowserRouter([
         ]
     },
     {
-        path:'dashBoard',
-        element:<PrivateRoute><DashBoardLayout></DashBoardLayout></PrivateRoute>,
-        children :[
+        path: 'dashBoard',
+        element: <PrivateRoute><DashBoardLayout></DashBoardLayout></PrivateRoute>,
+        children: [
             {
-                path:'myParcels',
+                path: 'myParcels',
                 Component: MyParcel
             },
             {
-                path:'payment/:parcelId',
-                Component:Payment
+                path: 'payment/:parcelId',
+                Component: Payment
             },
             {
-                path:'paymentHistory',
-                Component:PaymentHistory
+                path: 'paymentHistory',
+                Component: PaymentHistory
             },
             {
-                path:'trackParcel',
-                Component:TrackParcel
+                path: 'trackParcel',
+                Component: TrackParcel
+            },
+            {
+                path: 'pendingRiders',
+                Component:PendingRiders
             }
         ]
     }
