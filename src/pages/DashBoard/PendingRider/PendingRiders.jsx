@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import useAxios from '../../../Hooks/useAxios';
 import { useQuery } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
@@ -64,7 +64,7 @@ const PendingRiders = () => {
                     Swal.fire(
                         'Error!',
                         'Failed to approve the rider.',
-                        'error'
+                        error.message,
                     );
                 }
             }
@@ -73,7 +73,7 @@ const PendingRiders = () => {
 
     const handleCancel = (id) => {
         console.log('Cancelled rider:', id);
-        
+      
     };
 
     return (
