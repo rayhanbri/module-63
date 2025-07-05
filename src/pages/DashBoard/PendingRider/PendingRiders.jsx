@@ -36,8 +36,10 @@ const PendingRiders = () => {
     if (isLoading) return <p>Loading pending riders...</p>;
     if (isError) return <p>Error: {error.message}</p>;
 
+    // console.log(riders)
 
-    const handleApprove = (id) => {
+
+    const handleApprove = (id,email) => {
         Swal.fire({
             title: 'Are you sure?',
             text: "Do you want to approve this rider?",
@@ -50,7 +52,7 @@ const PendingRiders = () => {
             if (result.isConfirmed) {
                 try {
                     // API call to update status
-                    await axiosSecure.patch(`/riders/${id}`, { status: 'approved' });
+                    await axiosSecure.patch(`/riders/${id}`, { status: 'approved',email });
 
                     Swal.fire(
                         'Approved!',
@@ -108,7 +110,7 @@ const PendingRiders = () => {
                                         Details
                                     </button>
                                     <button
-                                        onClick={() => handleApprove(rider._id)}
+                                        onClick={() => handleApprove(rider._id,rider.email)}
                                         className="bg-green-600 text-white px-2 py-1 rounded"
                                     >
                                         Approve

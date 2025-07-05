@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../../Hooks/useAuth';
-import { Link } from 'react-router';
+import { Link} from 'react-router';
 import SocialLogin from '../SocialLogin/SocialLogin';
 import axios from 'axios';
 import useAxios from '../../../Hooks/useAxios';
 
-const Register = () => {
+const Register = ({from}) => {
     const { register, handleSubmit, formState: { errors } } = useForm()
     const { createUser, updateUserProfile } = useAuth();
     const [profilePic, setProfilePic] = useState('');
     const axiosInstance = useAxios();
-
+    
+   console.log(from)
     const onSubmit = data => {
         console.log(data)
         createUser(data.email, data.password)
