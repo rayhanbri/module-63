@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, Outlet } from 'react-router';
 import ProFastLogo from '../pages/Home/Home/Shared/ProFastLogo/ProFastLogo';
-import { FaHome, FaBoxOpen, FaHistory, FaSearchLocation, FaUserEdit, FaHourglassHalf, FaMotorcycle, FaUserShield } from 'react-icons/fa';
+import { FaHome, FaBoxOpen, FaHistory, FaSearchLocation, FaUserEdit, FaHourglassHalf, FaMotorcycle, FaUserShield, FaUserPlus } from 'react-icons/fa';
 import useUserRole from '../Hooks/useUserRole';
 
 const DashBoardLayout = () => {
@@ -56,6 +56,12 @@ const DashBoardLayout = () => {
                             <li><NavLink to='pendingRiders'><FaHourglassHalf className="inline mr-2" />Pending Riders</NavLink></li>
                             {/* make admin  */}
                             <li><NavLink to='makeAdmin'><FaUserShield className="inline mr-2" />Make Admin</NavLink></li>
+                            {/* assign rider */}
+                            <li>
+                                <NavLink to='assignRider'>
+                                    <FaUserPlus className="inline mr-2" />Assign Rider
+                                </NavLink>
+                            </li>
                         </>
 
                     }

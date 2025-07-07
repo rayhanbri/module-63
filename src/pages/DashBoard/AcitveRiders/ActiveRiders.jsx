@@ -35,6 +35,7 @@ const ActiveRiders = () => {
         Swal.fire('Success', 'Rider deactivated!', 'success');
         refetch(); // Refresh table
       } catch (error) {
+        console.log(error)
         Swal.fire('Error', 'Failed to deactivate rider.', 'error');
       }
     }
