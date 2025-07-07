@@ -49,7 +49,7 @@ const DashBoardLayout = () => {
                     <li><NavLink to='paymentHistory'><FaHistory className="inline mr-2" />Payment History</NavLink></li>
                     <li><NavLink to='trackParcel'><FaSearchLocation className="inline mr-2" />Track A Parcel</NavLink></li>
                     <li><NavLink to='updateProfile'><FaUserEdit className="inline mr-2" />Update Profile</NavLink></li>
-                    {isLoading && role === 'admin' &&
+                    {!isLoading && role === 'admin' &&
                         <>
                             {/* ✅ New Links */}
                             <li><NavLink to='activeRiders'><FaMotorcycle className="inline mr-2" />Active Riders</NavLink></li>

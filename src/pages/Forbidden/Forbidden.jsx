@@ -4,6 +4,7 @@ const Forbidden = () => {
     return (
         <div>
             This is forbidden page .
+            ekhane ekta  forbidden page dhibho 
         </div>
     );
 };

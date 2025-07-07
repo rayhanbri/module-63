@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import useAxios from '../../../Hooks/useAxios';
 import Swal from 'sweetalert2';
+import useAxiosSecure from '../../../Hooks/useAxiosSecure';
 
 const ActiveRiders = () => {
-  const axiosSecure = useAxios();
+  const axiosSecure = useAxiosSecure();
   const [searchTerm, setSearchTerm] = useState('');
 
   // ✅ Fetch all active riders

@@ -1,7 +1,7 @@
 import React, {  useState } from 'react';
-import useAxios from '../../../Hooks/useAxios';
 import { useQuery } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
+import useAxiosSecure from '../../../Hooks/useAxiosSecure';
 
 // const dummyRiders = [
 //     {
@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
 const PendingRiders = () => {
     // const [riders, setRiders] = useState([]);
     const [selectedRider, setSelectedRider] = useState(null);
-    const axiosSecure = useAxios();
+    const axiosSecure = useAxiosSecure();
 
 
     // Use React Query to fetch pending riders
