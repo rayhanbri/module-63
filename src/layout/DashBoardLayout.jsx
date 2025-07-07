@@ -2,8 +2,11 @@ import React from 'react';
 import { NavLink, Outlet } from 'react-router';
 import ProFastLogo from '../pages/Home/Home/Shared/ProFastLogo/ProFastLogo';
 import { FaHome, FaBoxOpen, FaHistory, FaSearchLocation, FaUserEdit, FaHourglassHalf, FaMotorcycle, FaUserShield } from 'react-icons/fa';
+import useUserRole from '../Hooks/useUserRole';
 
 const DashBoardLayout = () => {
+    const { role, isLoading } = useUserRole();
+    console.log(role)
     return (
         <div className="drawer lg:drawer-open">
             <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -46,11 +49,16 @@ const DashBoardLayout = () => {
                     <li><NavLink to='paymentHistory'><FaHistory className="inline mr-2" />Payment History</NavLink></li>
                     <li><NavLink to='trackParcel'><FaSearchLocation className="inline mr-2" />Track A Parcel</NavLink></li>
                     <li><NavLink to='updateProfile'><FaUserEdit className="inline mr-2" />Update Profile</NavLink></li>
-                    {/* ✅ New Links */}
-                    <li><NavLink to='activeRiders'><FaMotorcycle className="inline mr-2" />Active Riders</NavLink></li>
-                    <li><NavLink to='pendingRiders'><FaHourglassHalf className="inline mr-2" />Pending Riders</NavLink></li>
-                    {/* make admin  */}
-                    <li><NavLink to='makeAdmin'><FaUserShield className="inline mr-2" />Make Admin</NavLink></li>
+                    {isLoading && role === 'admin' &&
+                        <>
+                            {/* ✅ New Links */}
+                            <li><NavLink to='activeRiders'><FaMotorcycle className="inline mr-2" />Active Riders</NavLink></li>
+                            <li><NavLink to='pendingRiders'><FaHourglassHalf className="inline mr-2" />Pending Riders</NavLink></li>
+                            {/* make admin  */}
+                            <li><NavLink to='makeAdmin'><FaUserShield className="inline mr-2" />Make Admin</NavLink></li>
+                        </>
+
+                    }
                 </ul>
             </div>
         </div>
