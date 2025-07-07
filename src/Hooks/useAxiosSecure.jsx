@@ -10,7 +10,7 @@ const axiosSecure = axios.create({
 
 const useAxiosSecure = () => {
     const {user} = useAuth()
-    console.log(user.accessToken)
+    // console.log(user.accessToken)
      // 1.jwt verification start here 
     axiosSecure.interceptors.request.use(config =>{
         config.headers.Authorization =`Bearer ${user.accessToken}`
