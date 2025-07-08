@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import useAxiosSecure from '../../../Hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
 
@@ -8,7 +8,12 @@ const AssignRider = () => {
     const [selectedParcel, setSelectedParcel] = useState(null);
 
     // Load parcels that are paid and not collected
-    const { data: parcels = [], isLoading: loadingParcels, error: parcelError, refetch: refetchParcels } = useQuery({
+    const {
+        data: parcels = [],
+        isLoading: loadingParcels,
+        error: parcelError,
+        refetch: refetchParcels
+    } = useQuery({
         queryKey: ['paidUncollectedParcels'],
         queryFn: async () => {
             const res = await axiosSecure.get('/parcels', {
@@ -21,8 +26,11 @@ const AssignRider = () => {
         }
     });
 
-    // Fetch approved riders for the selected parcel's district
-    const { data: riders = [], isLoading: loadingRiders } = useQuery({
+    // Load approved riders based on sender center (district)
+    const {
+        data: riders = [],
+        isLoading: loadingRiders
+    } = useQuery({
         queryKey: ['approvedRiders', selectedParcel?.senderCenter],
         enabled: !!selectedParcel?.senderCenter,
         queryFn: async () => {
@@ -33,24 +41,42 @@ const AssignRider = () => {
         }
     });
 
-    // console.log(riders)
-
-    const handleAssignRider = async (riderId, riderEmail) => {
-        try {
-            await axiosSecure.patch(`/parcels/assign/${selectedParcel._id}`, {
+    // Mutation to assign rider and update statuses
+    const assignRiderMutation = useMutation({
+        mutationFn: async ({ parcelId, riderId, riderEmail }) => {
+            // 1. Assign rider to parcel
+            await axiosSecure.patch(`/parcels/assign/${parcelId}`, {
                 riderId,
                 riderEmail,
+                deliveryStatus: 'in_transit'
             });
 
-            Swal.fire('Assigned!', 'Rider assigned to parcel.', 'success');
-            setSelectedParcel(null); // Close modal
-            refetchParcels(); // Refresh list
-        } catch (err) {
-            console.log(err)
+            // 2. Update rider's work status
+            await axiosSecure.patch(`/riders/status/${riderId}`, {
+                workStatus: 'in_delivery'
+            });
+        },
+        onSuccess: () => {
+            Swal.fire('Assigned!', 'Rider assigned and status updated.', 'success');
+            setSelectedParcel(null);
+            refetchParcels();
+        },
+        onError: (error) => {
+            console.error(error);
             Swal.fire('Error!', 'Failed to assign rider.', 'error');
         }
+    });
+
+    // Handler to trigger mutation
+    const handleAssignRider = (riderId, riderEmail) => {
+        assignRiderMutation.mutate({
+            parcelId: selectedParcel._id,
+            riderId,
+            riderEmail
+        });
     };
 
+    // Loading and error states
     if (loadingParcels) return <p>Loading parcels...</p>;
     if (parcelError) return <p className="text-red-500">Error: {parcelError.message}</p>;
 
@@ -104,7 +130,9 @@ const AssignRider = () => {
             {selectedParcel && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white rounded-lg p-6 w-full max-w-3xl relative">
-                        <h3 className="text-xl font-semibold mb-4">Select Rider for Parcel: {selectedParcel.tracking_id}</h3>
+                        <h3 className="text-xl font-semibold mb-4">
+                            Select Rider for Parcel: {selectedParcel.tracking_id}
+                        </h3>
                         <button
                             className="absolute top-2 right-2 text-xl text-gray-500 hover:text-red-600"
                             onClick={() => setSelectedParcel(null)}
@@ -133,10 +161,11 @@ const AssignRider = () => {
                                                 <td>{rider.district}</td>
                                                 <td>
                                                     <button
-                                                        className="bg-green-600 text-white px-2 py-1 rounded"
+                                                        className="bg-green-600 text-white px-2 py-1 rounded disabled:opacity-50"
                                                         onClick={() => handleAssignRider(rider._id, rider.email)}
+                                                        disabled={assignRiderMutation.isLoading}
                                                     >
-                                                        Assign
+                                                        {assignRiderMutation.isLoading ? 'Assigning...' : 'Assign'}
                                                     </button>
                                                 </td>
                                             </tr>
